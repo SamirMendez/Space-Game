@@ -10,29 +10,49 @@ function initCanvas(){
     naveImage.src       = "src/assets/img/alien-spaceship.jpg"; //Spaceship picture
     // // Enemigos fotos
     enemiespic1.src     = "src/assets/img/BlueBalloon.jpg";
-    // enemiespic2.src     = "images/enemigo2.png"; //Enemies picture
+    // enemiespic2.src     = "";
     
     // width and height (canvas)
     var cW = ctx.canvas.width;  
     var cH = ctx.canvas.height;
 
-    // template for naves
-    var enemyTemplate = function(options){
-        return {
-            id: options.id || '',
-            x: options.x || '',
-            y: options.y || '',
-            w: options.w || '',
-            h: options.h || '',
-            image: options.image || enemiespic1
-        }
-    }
-
+    
+//Spawn de Enemigos
+    var stageWidth = 700;
+    var stageHeight = 350;
+    
+    var intervalInMilliseconds = 800;
+    
     var enemies = [
-        new enemyTemplate({id: "enemy1", x: 350, y: 500, w: 60, h: 80}),
-        new enemyTemplate({id: "enemy2", x: 450, y: 550, w: 60, h: 80}),
-        new enemyTemplate({id: "enemy3", x: 500, y: 500, w: 60, h: 80})
     ];
+    
+    var enemyWidth = 100;
+    var enemyHeight = 50;
+    
+    function spawnEnemy(){
+        
+        console.log(enemies);
+        var randomXPosition = Math.floor(Math.random() * (stageWidth - enemyWidth)) + 1;
+        var randomYPosition = (2 * (stageHeight - enemyHeight)) + 1;
+        
+        var newEnemy = {
+            x: randomXPosition,
+            y: randomYPosition,
+            w: '60',
+            h: '80',
+            image: enemiespic1
+        };
+    
+        enemies.push(newEnemy);
+    }
+    
+    //This function will run 'spawnEnemy()' every 'intervalInMilliSeconds'.
+    setInterval(spawnEnemy, intervalInMilliseconds);
+
+
+
+
+
 
     var renderEnemies = function(enemyList){
         
@@ -112,8 +132,6 @@ function initCanvas(){
           launcher.direccion = '';
         }
    });
-    ctx.font = "30px Arial";
-    ctx.fillText("Hello World", 10, 50);
 }
 
  
@@ -121,3 +139,40 @@ function initCanvas(){
 window.addEventListener('load', function(event) {
     initCanvas();
 });
+
+let tiempoRef = Date.now()
+let cronometrar = true
+let acumulado = 0
+
+// function iniciar() {
+//     cronometrar = true
+// }
+
+// function pausar() {
+//     cronometrar = false
+// }
+
+// function reiniciar() {
+//     acumulado = 0
+// }
+
+setInterval(() => {
+    let tiempo = document.getElementById("tiempo")
+    if (cronometrar) {
+        acumulado += Date.now() - tiempoRef
+    }
+    tiempoRef = Date.now()
+    tiempo.innerHTML = formatearMS(acumulado)
+}, 1000 / 60);
+
+function formatearMS(tiempo_ms) {
+    let MS = tiempo_ms % 1000
+    let S = Math.floor(((tiempo_ms - MS) / 1000) % 60)
+    let M = Math.floor((S / 60) % 60)
+    let H = Math.floor((M / 60))
+    Number.prototype.ceros = function (n) {
+        return (this + "").padStart(n, 0)
+    }
+    return H.ceros(2) + ":" + M.ceros(2) + ":" + S.ceros(2)
+        + "." + MS.ceros(3)
+}
