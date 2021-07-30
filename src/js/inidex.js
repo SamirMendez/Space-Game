@@ -1,5 +1,6 @@
 function initCanvas(){
     var contador = 0;
+    reduceScore();
     var ctx = document.getElementById('my_canvas').getContext('2d');
     var backgroundImage = new Image();
     var naveImage   = new Image(); // nave
@@ -21,9 +22,19 @@ function initCanvas(){
     function addPuntation(tipo)
     {
     contador = contador + tipo;
+    const counter = document.getElementById('score');
+    counter.innerHTML = contador;
     console.log(contador);
     }
     
+    // Reduccion de puntuacion
+    function reduceScore() {
+        setInterval(() => {
+            contador = contador - 5;
+            const counter = document.getElementById('score');
+            counter.innerHTML = contador;
+        }, 10000);
+    }
     //Spawn de Enemigos
     var stageWidth = 700;
     var stageHeight = 350;
