@@ -10,7 +10,7 @@ function initCanvas(){
     naveImage.src       = "src/assets/img/alien-spaceship.jpg"; //Spaceship picture
     // // Enemigos fotos
     enemiespic1.src     = "src/assets/img/BlueBalloon.jpg";
-    // enemiespic2.src     = "";
+    enemiespic2.src     = "src/assets/img/globo-rojo.jpg";
     
     // width and height (canvas)
     var cW = ctx.canvas.width;  
@@ -20,15 +20,11 @@ function initCanvas(){
 //Spawn de Enemigos
     var stageWidth = 700;
     var stageHeight = 350;
-    
-    var intervalInMilliseconds = 800;
-    
+    var intervalInMilliseconds = 1500;
     var enemies = [
-    ];
-    
+    ];  
     var enemyWidth = 100;
     var enemyHeight = 50;
-    
     function spawnEnemy(){
         
         console.log(enemies);
@@ -49,16 +45,47 @@ function initCanvas(){
     //This function will run 'spawnEnemy()' every 'intervalInMilliSeconds'.
     setInterval(spawnEnemy, intervalInMilliseconds);
 
+    //Spawn de enemigos Rojos
+    //Spawn de Enemigos
+    var stageWidth2 = 700;
+    var stageHeight2 = 350;
+    var intervalInMilliseconds2 = 800;
+    var enemies2 = [
+    ];  
+    var enemyWidth2 = 100;
+    var enemyHeight2 = 50;
+    function spawnEnemy2(){
+        
+        console.log(enemies2);
+        var randomXPosition2 = Math.floor(Math.random() * (stageWidth2 - enemyWidth2)) + 1;
+        var randomYPosition2 = (2 * (stageHeight2 - enemyHeight2)) + 1;
+        
+        var newEnemy2 = {
+            x: randomXPosition2,
+            y: randomYPosition2,
+            w: '60',
+            h: '80',
+            image: enemiespic2
+        };
+    
+        enemies2.push(newEnemy2);
+    }
+    
+    //This function will run 'spawnEnemy()' every 'intervalInMilliSeconds'.
+    setInterval(spawnEnemy2, intervalInMilliseconds2);
 
 
 
 
 
-    var renderEnemies = function(enemyList){
+
+    var renderEnemies = function(enemyList, enemyList2) {
         
         for(var i=0; i<enemyList.length; i++) {
             var enemy = enemyList[i];
-            ctx.drawImage(enemy.image, enemy.x, enemy.y -= .5, enemy.w, enemy.h);
+            var enemy2 = enemyList2[i];
+            ctx.drawImage(enemy.image, enemy.x, enemy.y -= .7, enemy.w, enemy.h);
+            ctx.drawImage(enemy2.image, enemy2.x, enemy2.y -= .3, enemy2.w, enemy2.h);
         }
     }
 
@@ -69,7 +96,7 @@ function initCanvas(){
         this.w = 100, 
         this.h = 100,   
         this.direccion, 
-        this.bg="red", // bullet color (color de bala)
+        this.bg="white", // bullet color (color de bala)
         this.misiles = [];
 
         this.render = function() {
@@ -95,7 +122,7 @@ function initCanvas(){
     function animate(){
         ctx.clearRect(0, 0, cW, cH);
         launcher.render();
-        renderEnemies(enemies);
+        renderEnemies(enemies, enemies2);
     }
 
     var animateInterval = setInterval(animate, 6);
@@ -138,6 +165,8 @@ function initCanvas(){
           launcher.direccion = '';
         }
    });
+
+
 }
 
  
