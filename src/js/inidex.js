@@ -75,8 +75,14 @@ function initCanvas(){
         this.render = function() {
             if(this.direccion === "downArrow"){
                 this.y+=5;
+                if(this.y == 500){
+                    naveImage.src = "src/assets/img/Explosion.jpg";
+                }
             }else if(this.direccion === "upArrow"){
                 this.y-=5;
+                if(this.y == 20){
+                    naveImage.src = "src/assets/img/Explosion.jpg";
+                }
             }
             ctx.fillstyle = this.bg;
             // ctx.drawImage(backgroundImage, 15, 15);
