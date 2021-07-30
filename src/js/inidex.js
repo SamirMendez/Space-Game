@@ -1,10 +1,12 @@
 function initCanvas(){
+    var contador = 0;
     var ctx = document.getElementById('my_canvas').getContext('2d');
     var backgroundImage = new Image();
     var naveImage   = new Image(); // nave
     var enemiespic1  = new Image(); // enemigo 1
     var enemiespic2 = new Image(); // enemigo 2
     var misile = new Image(); // misisle
+    var punto = document.getElementById('score');
     // backgroundImage y naveImage
     backgroundImage.src = "src/assets/img/graham-holtshausen-fUnfEz3VLv4-unsplash.jpg"; //Background picture
     naveImage.src       = "src/assets/img/alien-spaceship.jpg"; //Spaceship picture
@@ -16,8 +18,13 @@ function initCanvas(){
     var cW = ctx.canvas.width;  
     var cH = ctx.canvas.height;
 
+    function addPuntation(tipo)
+    {
+    contador = contador + tipo;
+    console.log(contador);
+    }
     
-//Spawn de Enemigos
+    //Spawn de Enemigos
     var stageWidth = 700;
     var stageHeight = 350;
     var intervalInMilliseconds = 1500;
@@ -99,23 +106,59 @@ function initCanvas(){
         this.bg="red", // bullet color (color de bala)
         this.misiles = [];
 
+        this.gameStatus = {
+            over: false,
+            message: "",
+            fillstyle: 'red',
+            font: 'italic bold 36px Arial, sans-serif',
+        }
+
         this.render = function() 
         {
             if(this.direccion === "downArrow"){
                 this.y+=5;
                 if(this.y == 500){
                     naveImage.src = "src/assets/img/Explosion.jpg";
+
+            if (naveImage.src = "src/assets/img/Explosion.jpg")
+            {
+                                    this.gameStatus.over = true;
+                                    this.gameStatus.message = 'La nave se ha estrellado';
+                                    if(this.gameStatus.over === true)
+                                    {
+                                        clearInterval(animateInterval);
+                                        ctx.fillstyle = this.gameStatus.fillstyle;
+                                        ctx.font = this.gameStatus.font;
+                    
+                                      alert(this.gameStatus.message)
+                                    }
+                                }
                 }
             }else if(this.direccion === "upArrow"){
                 this.y-=5;
                 if(this.y == 20){
                     naveImage.src = "src/assets/img/Explosion.jpg";
+
+            if (naveImage.src = "src/assets/img/Explosion.jpg")
+            {
+                                    this.gameStatus.over = true;
+                                    this.gameStatus.message = 'La nave se ha estrellado';
+                                    if(this.gameStatus.over === true)
+                                    {
+                                        clearInterval(animateInterval);
+                                        ctx.fillstyle = this.gameStatus.fillstyle;
+                                        ctx.font = this.gameStatus.font;
+                    
+                                      alert(this.gameStatus.message)
+                                    }
+                                }
+                
                 }
             }
             ctx.fillstyle = this.bg;
             ctx.drawImage(naveImage, this.x, this.y, 100, 100);
             
-            //aqui es que se crea el misil cuando se [resion espcio
+            //aqui es que se crea el misil cuando se presiona espcio
             for(var i=0; i < this.misiles.length; i++){
                 var misileObject = this.misiles[i];
                 // misileObject.x -= .5;
@@ -127,18 +170,17 @@ function initCanvas(){
                 {
                     if(misileObject.x >= enemies[k].x &&misileObject.x <= (enemies[k].x + 60) && misileObject.y >= enemies[k].y &&misileObject.y <= (enemies[k].y + 80))
                     {
-                        var misileExplosion = new Image(); //
-                        // misileExplosion.src =  "src/assets/img/Explosion.jpg";
 
                              misileObject.exploded = true; 
+                             addPuntation(10);
                              ctx.drawImage(enemies[k].image, 0,0,0,0)
                              enemies.splice(k,1);
                              this.misiles.splice(i, 1);
-
+                             
                     }
                 }
 
-
+                // var count  = 0;
                // Aqui se conoce cuando el misil choca con un globo rojo
                 for (var r=0; r < enemies2.length; r++)
                 {
@@ -148,9 +190,15 @@ function initCanvas(){
                         // misileExplosion.src =  "src/assets/img/Explosion.jpg";
 
                              misileObject.exploded = true; 
+                             addPuntation(1);
                              ctx.drawImage(enemies2[r].image, 0,0,0,0)
                              enemies2.splice(r,1);
                              this.misiles.splice(i, 1);
+                            //  count += 1;
+                            //  document.getElementById
+                            //  var counter =parseInt(document.getElementById("score").value);
+                            //  counter += 1; 
+                            //  console.log(counter);
                     }
                 }
             }
@@ -259,13 +307,13 @@ function formatearMS(tiempo_ms)
 {
     let MS = tiempo_ms % 1000
     let S = Math.floor(((tiempo_ms - MS) / 1000) % 60)
-    let misileObject = Math.floor((S / 60) % 60)
-    let H = Math.floor((misileObject / 60))
+    let m = Math.floor((S / 60) % 60)
+    let H = Math.floor((m / 60))
     Number.prototype.ceros = function (n)
     {
         return (this + "").padStart(n, 0)
     }
-    return H.ceros(2) + ":" + misileObject.ceros(2) + ":" + S.ceros(2)
+    return H.ceros(2) + ":" + m.ceros(2) + ":" + S.ceros(2)
         + "." + MS.ceros(3)
 
 }
